@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "plotarea.h"
+#include "logwidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,6 +19,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    PlotArea *area;
+    PlotArea *area = nullptr;
+    LogWidget *log = nullptr;
 };
 #endif // MAINWINDOW_H
