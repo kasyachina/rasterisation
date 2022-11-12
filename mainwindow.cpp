@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
     log->AppendMessage("abracadabra");
-    NaiveLine(-1, -1, 5, 3);
+    BresenhamLine(-3, 4, 5, -7);
 }
 
 MainWindow::~MainWindow()
@@ -74,6 +74,41 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
         for(int x = x1; x <= x2; ++x)
         {
             area->AddPixel(x, y1 + dy * (x - x1) / dx);
+        }
+    }
+}
+void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
+{
+    int dx = std::abs(x2 - x1);
+    int sx = x1 < x2 ? 1 : -1;
+    int dy = -std::abs(y2 - y1);
+    int sy = y1 < y2 ? 1 : -1;
+    int error = dx + dy;
+    while (true)
+    {
+        area->AddPixel(x1, y1);
+        if (x1 == x2 && y1 == y2)
+        {
+            break;
+        }
+        int e2 = 2 * error;
+        if (e2 >= dy)
+        {
+            if (x1 == x2)
+            {
+                break;
+            }
+            error = error + dy;
+            x1 = x1 + sx;
+        }
+        if (e2 <= dx)
+        {
+            if (y1 == y2)
+            {
+                break;
+            }
+            error = error + dx;
+            y1 = y1 + sy;
         }
     }
 }
