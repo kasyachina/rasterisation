@@ -18,6 +18,12 @@ public:
     ~MainWindow();
 
 private:
+    void BresenhamLine(int x1, int y1, int x2, int y2);
+    void BresenhamCircle(int r);
+    void DDALine(int x1, int y1, int x2, int y2);
+    void NaiveLine(int x1, int y1, int x2, int y2);
+    void Castle_Pittwey(int x1, int y1, int x2, int y2);
+    void WuLine(int x1, int y1, int x2, int y2);
     Ui::MainWindow *ui;
     PlotArea *area = nullptr;
     LogWidget *log = nullptr;
