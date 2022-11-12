@@ -53,11 +53,19 @@ void PlotArea::drawTicks(QPainter& p)
     ticksPen.setWidth(axis_width);
     //ticks x
     int i = 0;
-    while(zx + (i + 2) * u < width())
+    while(zx + (i + 1) * u < width())
     {
         i++;
         p.drawLine(zx + i * u, zy + tick_length, zx + i * u, zy - tick_length);
         p.drawLine(zx - i * u, zy + tick_length, zx - i * u, zy - tick_length);
+    }
+    //ticks y
+    i = 0;
+    while(zy + (i + 1) * u < height())
+    {
+        i++;
+        p.drawLine(zx - tick_length, zy + i * u, zx + tick_length, zy + i * u);
+        p.drawLine(zx - tick_length, zy - i * u, zx + tick_length, zy - i * u);
     }
 }
 
@@ -69,6 +77,7 @@ void PlotArea::paintEvent(QPaintEvent*)
     drawBox(pt);
     drawGrid(pt);
     drawAxis(pt);
+    drawTicks(pt);
     /*
     //arrow x
         QPainterPath px;
@@ -79,14 +88,7 @@ void PlotArea::paintEvent(QPaintEvent*)
         px.lineTo(width() - 1, zy);
         px.lineTo(width() - u - 1, zy + 2 * tick_width);
         pt.drawPath(px);
-    //ticks y
-    i = 0;
-    while(zy + (i + 2) * u < height())
-    {
-        i++;
-        pt.drawLine(zx - tick_width, zy + i * u, zx + tick_width, zy + i * u);
-        pt.drawLine(zx - tick_width, zy - i * u, zx + tick_width, zy - i * u);
-    }
+
 
     //arrow y
         QPainterPath py;
