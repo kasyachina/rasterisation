@@ -11,11 +11,14 @@ public:
     explicit PlotArea(QWidget *parent = nullptr);
     void paintEvent(QPaintEvent* event) override;
 private:
-    int u = 10; // unit size
+    int u = 20; // unit size
     int tick_length = 8;
+    int grid_line_width = 1;
+    int axis_width = 2;
     int box_offset = 1;
     int box_width = 1;
     QColor penColor = Qt::black;
+    QColor gridColor = QColor(Qt::gray);
     void inline drawBox(QPainter(&p));
     void inline drawGrid(QPainter& p);
     void inline drawAxis(QPainter& p);

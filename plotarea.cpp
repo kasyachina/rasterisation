@@ -13,6 +13,28 @@ void PlotArea::drawBox(QPainter& p)
     p.setPen(QPen(QBrush(Qt::gray), box_width));
     p.drawRect(box_offset, box_offset, w, h);
 }
+void PlotArea::drawGrid(QPainter& p)
+{
+    QPen gridPen(gridColor);
+    gridPen.setWidth(grid_line_width);
+    p.setPen(gridPen);
+    int zx = width() / 2;
+    int zy = height() / 2;
+    int i = 0;
+    while(zx + i * u <= width() - box_offset)
+    {
+        i++;
+        p.drawLine(zx + i * u, box_offset, zx + i * u, height() - box_offset);
+        p.drawLine(zx - i * u, box_offset, zx - i * u, height() - box_offset);
+    }
+    i = 0;
+    while(zy + i * u < height())
+    {
+        i++;
+        p.drawLine(box_offset, zy + i * u, width() - box_offset, zy + i * u);
+        p.drawLine(box_offset, zy - i * u, width() - box_offset, zy - i * u);
+    }
+}
 void PlotArea::drawArrows(QPainter& p)
 {
 
@@ -21,10 +43,7 @@ void PlotArea::drawTicks(QPainter& p)
 {
 
 }
-void PlotArea::drawGrid(QPainter& p)
-{
 
-}
 void PlotArea::paintEvent(QPaintEvent*)
 {
     int zx = width() / 2;
@@ -32,6 +51,7 @@ void PlotArea::paintEvent(QPaintEvent*)
     int tick_width = 4;
     QPainter pt(this);
     drawBox(pt);
+    drawGrid(pt);
     pt.setPen(QPen(penColor));
     //axis
     pt.drawLine(u, zy, width() - u, zy);
