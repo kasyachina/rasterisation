@@ -104,12 +104,12 @@ void PlotArea::AddPixel(int x, int y)
     pixels.push_back({x, y});
     repaint();
 }
-void PlotArea::clear()
+void PlotArea::Clear()
 {
     pixels.clear();
     repaint();
 }
-void PlotArea::changeUnit(int nu)
+void PlotArea::ChangeUnit(int nu)
 {
     int length = std::min(width(), height());
     int minUnit = length / 80;

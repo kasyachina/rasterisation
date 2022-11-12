@@ -11,8 +11,8 @@ class PlotArea : public QWidget
 public:
     explicit PlotArea(QWidget *parent = nullptr);
     void AddPixel(int x, int y);
-    void clear();
-    void changeUnit(int nu);
+    void Clear();
+    void ChangeUnit(int nu);
 private:
     int u; // unit size
     int tick_length = 4;
