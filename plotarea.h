@@ -3,15 +3,18 @@
 
 #include <QPainter>
 #include <QWidget>
+#include <vector>
 
 class PlotArea : public QWidget
 {
     Q_OBJECT
 public:
     explicit PlotArea(QWidget *parent = nullptr);
-    void paintEvent(QPaintEvent* event) override;
+    void drawPixel(int x, int y);
+    void clear();
+    void changeUnit(int nu);
 private:
-    int u = 20; // unit size
+    int u; // unit size
     int tick_length = 4;
     int grid_line_width = 1;
     int axis_width = 2;
@@ -27,6 +30,9 @@ private:
     void inline drawAxis(QPainter& p);
     void inline drawTicks(QPainter& p);
     void inline drawArrows(QPainter& p);
+    void inline drawPixels(QPainter& p);
+    std::vector<std::pair<int,int>> pixels;
+    void paintEvent(QPaintEvent* event) override;
 };
 
 #endif // PLOTAREA_H
