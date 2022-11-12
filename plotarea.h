@@ -13,7 +13,8 @@ public:
 private:
     int u = 10; // unit size
     int tick_length = 8;
-    int box_offset = 10;
+    int box_offset = 1;
+    int box_width = 1;
     QColor penColor = Qt::black;
     void inline drawBox(QPainter(&p));
     void inline drawGrid(QPainter& p);

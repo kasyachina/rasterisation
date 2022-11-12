@@ -8,7 +8,10 @@ PlotArea::PlotArea(QWidget *parent):QWidget(parent)
 
 void PlotArea::drawBox(QPainter& p)
 {
-
+    int h = height() - 2 * box_offset;
+    int w = width() - 2 * box_offset;
+    p.setPen(QPen(QBrush(Qt::gray), box_width));
+    p.drawRect(box_offset, box_offset, w, h);
 }
 void PlotArea::drawArrows(QPainter& p)
 {
@@ -28,6 +31,7 @@ void PlotArea::paintEvent(QPaintEvent*)
     int zy = height() / 2;
     int tick_width = 4;
     QPainter pt(this);
+    drawBox(pt);
     pt.setPen(QPen(penColor));
     //axis
     pt.drawLine(u, zy, width() - u, zy);
