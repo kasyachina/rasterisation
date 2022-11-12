@@ -12,13 +12,16 @@ public:
     void paintEvent(QPaintEvent* event) override;
 private:
     int u = 20; // unit size
-    int tick_length = 8;
+    int tick_length = 4;
     int grid_line_width = 1;
     int axis_width = 2;
     int box_offset = 1;
     int box_width = 1;
-    QColor penColor = Qt::black;
-    QColor gridColor = QColor(Qt::gray);
+    int zx = 0;
+    int zy = 0;
+    QColor axisColor = Qt::black;
+    QColor gridColor = Qt::gray;
+    QColor boxColor = Qt::gray;
     void inline drawBox(QPainter(&p));
     void inline drawGrid(QPainter& p);
     void inline drawAxis(QPainter& p);
