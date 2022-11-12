@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
     log->AppendMessage("abracadabra");
-    BresenhamLine(-3, 4, 5, -7);
+    DDALine(-1, -1, 7, 5);
 }
 
 MainWindow::~MainWindow()
@@ -110,5 +110,26 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
             error = error + dx;
             y1 = y1 + sy;
         }
+    }
+}
+void MainWindow::DDALine(int x1, int y1, int x2, int y2)
+{
+    qreal dx = (x2 - x1);
+    qreal dy = (y2 - y1);
+    int step;
+    if (abs(dx) >= abs(dy))
+      step = abs(dx);
+    else
+      step = abs(dy);
+    dx = dx / step;
+    dy = dy / step;
+    qreal x = x1;
+    qreal y = y1;
+    int i = 1;
+    while (i <= step) {
+      area->AddPixel(x, y);
+      x = x + dx;
+      y = y + dy;
+      i = i + 1;
     }
 }
