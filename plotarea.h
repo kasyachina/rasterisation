@@ -10,7 +10,7 @@ class PlotArea : public QWidget
     Q_OBJECT
 public:
     explicit PlotArea(QWidget *parent = nullptr);
-    void drawPixel(int x, int y);
+    void AddPixel(int x, int y);
     void clear();
     void changeUnit(int nu);
 private:
@@ -20,11 +20,13 @@ private:
     int axis_width = 2;
     int box_offset = 1;
     int box_width = 1;
+    int pixel_width = 1;
     int zx = 0;
     int zy = 0;
     QColor axisColor = Qt::black;
     QColor gridColor = Qt::gray;
     QColor boxColor = Qt::gray;
+    QColor pixelColor = QColor(Qt::gray).darker();
     void inline drawBox(QPainter(&p));
     void inline drawGrid(QPainter& p);
     void inline drawAxis(QPainter& p);

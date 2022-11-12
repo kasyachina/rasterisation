@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     QHBoxLayout *l = new QHBoxLayout;
     area = new PlotArea();
+    area->AddPixel(1, 1);
+    area->AddPixel(3, 3);
     l -> addWidget(area);
     l -> addWidget(ui -> frame);
     centralWidget() -> setLayout(l);

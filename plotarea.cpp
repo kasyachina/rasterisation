@@ -1,7 +1,7 @@
 #include "plotarea.h"
 #include <QPainter>
 #include <QPainterPath>
-#include <QDialog>
+#include <QMessageBox>
 
 PlotArea::PlotArea(QWidget *parent):QWidget(parent)
 {
@@ -87,8 +87,19 @@ void PlotArea::drawArrows(QPainter& p)
     py.lineTo(zx + 2 * tick_length, u + 1);
     p.drawPath(py);
 }
-
-void PlotArea::drawPixel(int x, int y)
+void PlotArea::drawPixels(QPainter& p)
+{
+    QPen pixelPen(pixelColor, pixel_width);
+    p.setPen(pixelPen);
+    p.setBrush(QBrush(pixelColor));
+    for (const auto& pixel: pixels)
+    {
+        int xpos = zx + (pixel.first - 1) * u + pixel_width;
+        int ypos = zy - (pixel.second) * u + pixel_width;
+        p.drawRect(xpos, ypos, u - pixel_width, u - pixel_width);
+    }
+}
+void PlotArea::AddPixel(int x, int y)
 {
     pixels.push_back({x, y});
     repaint();
@@ -100,7 +111,18 @@ void PlotArea::clear()
 }
 void PlotArea::changeUnit(int nu)
 {
-    u = nu;
+    int length = std::min(width(), height());
+    int minUnit = length / 80;
+    int maxUnit = length / 10;
+    if (nu > maxUnit || nu < minUnit)
+    {
+        QMessageBox::warning(this, "Ошибка", "Неккоректное значение единичного отрезка. Для корректного отображения оно должно быть в промежутке ["
+                             + QString::number(minUnit) + "," + QString::number(maxUnit) + "].");
+    }
+    else
+    {
+        u = nu;
+    }
 }
 void PlotArea::paintEvent(QPaintEvent*)
 {
@@ -112,4 +134,5 @@ void PlotArea::paintEvent(QPaintEvent*)
     drawAxis(pt);
     drawTicks(pt);
     drawArrows(pt);
+    drawPixels(pt);
 }
