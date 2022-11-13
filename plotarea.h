@@ -12,7 +12,7 @@ public:
     explicit PlotArea(QWidget *parent = nullptr);
     void AddPixel(int x, int y, qreal percent = 1);
     void Clear();
-    void ChangeUnit(int nu);
+    void SetUnit(int nu);
 private:
     int u; // unit size
     int tick_length = 4;

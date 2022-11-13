@@ -117,20 +117,9 @@ void PlotArea::Clear()
     pixels.clear();
     repaint();
 }
-void PlotArea::ChangeUnit(int nu)
+void PlotArea::SetUnit(int nu)
 {
-    int length = std::min(width(), height());
-    int minUnit = 3;
-    int maxUnit = length / 10;
-    if (nu > maxUnit || nu < minUnit)
-    {
-        QMessageBox::warning(this, "Ошибка", "Неккоректное значение единичного отрезка. Для корректного отображения оно должно быть в промежутке ["
-                             + QString::number(minUnit) + "," + QString::number(maxUnit) + "].");
-    }
-    else
-    {
-        u = nu;
-    }
+      u = nu;
 }
 void PlotArea::paintEvent(QPaintEvent*)
 {

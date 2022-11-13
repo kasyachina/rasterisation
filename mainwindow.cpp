@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QGridLayout>
 #include <QMessageBox>
-#include <QDialog>
+#include <QInputDialog>
 #include <QValidator>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -52,12 +52,18 @@ MainWindow::MainWindow(QWidget *parent)
     setMinimumSize(500, 600);
     setWindowTitle("Растеризация");
     DisableInput();
+
     QIntValidator *validator = new QIntValidator(this);
     ui -> fx -> setValidator(validator);
     ui -> fy -> setValidator(validator);
     ui -> sx -> setValidator(validator);
     ui -> sy -> setValidator(validator);
     ui -> rad -> setValidator(validator);
+    ui -> fx -> setText("0");
+    ui -> fy -> setText("0");
+    ui -> sx -> setText("0");
+    ui -> sy -> setText("0");
+    ui -> rad -> setText("0");
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
     log->AppendMessage("abracadabra");
@@ -103,9 +109,9 @@ void MainWindow::EnableInputCircle()
     ui -> fy -> setVisible(true);
     ui -> r -> setVisible(true);
     ui -> rad -> setVisible(true);
-    ui -> fx -> clear();
-    ui -> fy -> clear();
-    ui -> rad -> clear();
+    ui -> fx -> setText("0");
+    ui -> fy -> setText("0");
+    ui -> rad -> setText("0");
 }
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
@@ -130,10 +136,23 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
     }
     else
     {
-        for(int x = x1; x <= x2; ++x)
-        {
-            area->AddPixel(x, y1 + dy * (x - x1) / (qreal)dx);
-        }
+         if (std::abs(dx) > std::abs(dy))
+            for(int x = x1; x <= x2; ++x)
+            {
+                area->AddPixel(x, y1 + dy * (x - x1) / (qreal)dx);
+            }
+         else
+         {
+             if (y1 > y2)
+             {
+                 std::swap(x1, x2);
+                 std::swap(y1, y2);
+             }
+             for (int y = y1; y <= y2; ++y)
+             {
+                 area->AddPixel(dx / (qreal)dy * (y - y1) + x1, y);
+             }
+         }
     }
 }
 void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
@@ -186,7 +205,7 @@ void MainWindow::DDALine(int x1, int y1, int x2, int y2)
     dy = dy / step;
     qreal x = x1;
     qreal y = y1;
-    int i = 1;
+    int i = 0;
     while (i <= step) {
       area->AddPixel(x, y);
       x = x + dx;
@@ -362,7 +381,7 @@ void MainWindow::on_wuline_clicked()
 
 void MainWindow::on_drawButton_clicked()
 {
-    int x0, y0, x1, y1, r;
+    int x0 = 0, y0 = 0, x1 = 0, y1 = 0, r = 1;
     switch(algo)
     {
         case CurrentAlgo::None:
@@ -408,6 +427,13 @@ void MainWindow::on_drawButton_clicked()
 
 void MainWindow::on_scaleButton_clicked()
 {
-
+    int length = std::min(width(), height());
+    bool ok;
+    int nu = QInputDialog::getInt(centralWidget(), "Изменение параметров", "Введите новое значение единичкого отрезка", 20, 3, length / 10, 1, &ok);
+    if (ok)
+    {
+        area -> SetUnit(nu);
+        area -> repaint();
+    }
 }
 
