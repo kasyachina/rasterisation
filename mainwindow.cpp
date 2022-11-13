@@ -302,3 +302,37 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
            }
     }
 }
+
+void MainWindow::on_bline_clicked()
+{
+    algo = CurrentAlgo::BresenhamLine;
+    EnableInputLine();
+}
+
+
+void MainWindow::on_ddaline_clicked()
+{
+    algo = CurrentAlgo::DDALine;
+    EnableInputLine();
+}
+
+
+void MainWindow::on_bcircle_clicked()
+{
+    algo = CurrentAlgo::BresenhamCircle;
+    EnableInputCircle();
+}
+
+
+void MainWindow::on_nline_clicked()
+{
+    algo = CurrentAlgo::NaiveLine;
+    EnableInputLine();
+}
+
+void MainWindow::on_wuline_clicked()
+{
+    algo = CurrentAlgo::WuLine;
+    EnableInputLine();
+}
+

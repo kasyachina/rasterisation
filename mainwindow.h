@@ -9,6 +9,16 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+enum class CurrentAlgo
+{
+    None,
+    BresenhamLine,
+    BresenhamCircle,
+    NaiveLine,
+    DDALine,
+    WuLine,
+};
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -16,6 +26,17 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void on_bline_clicked();
+
+    void on_ddaline_clicked();
+
+    void on_bcircle_clicked();
+
+    void on_nline_clicked();
+
+    void on_wuline_clicked();
 
 private:
     void DisableInput();
@@ -30,5 +51,6 @@ private:
     Ui::MainWindow *ui;
     PlotArea *area = nullptr;
     LogWidget *log = nullptr;
+    CurrentAlgo algo = CurrentAlgo::None;
 };
 #endif // MAINWINDOW_H
