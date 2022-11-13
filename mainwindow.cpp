@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
     log->AppendMessage("abracadabra");
-    DDALine(-1, -1, 7, 5);
+    BresenhamCircle(0, 0, 5);
 }
 
 MainWindow::~MainWindow()
@@ -73,7 +73,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
     {
         for(int x = x1; x <= x2; ++x)
         {
-            area->AddPixel(x, y1 + dy * (x - x1) / dx);
+            area->AddPixel(x, y1 + dy * (x - x1) / (qreal)dx);
         }
     }
 }
@@ -131,5 +131,32 @@ void MainWindow::DDALine(int x1, int y1, int x2, int y2)
       x = x + dx;
       y = y + dy;
       i = i + 1;
+    }
+}
+void MainWindow::BresenhamCircle(int x0, int y0, int radius)
+{
+    int x = radius;
+    int y = 0;
+    int radiusError = 1 - x;
+    while (x >= y)
+    {
+        area->AddPixel(x + x0, y + y0);
+        area->AddPixel(y + x0, x + y0);
+        area->AddPixel(-x + x0, y + y0);
+        area->AddPixel(-y + x0, x + y0);
+        area->AddPixel(-x + x0, -y + y0);
+        area->AddPixel(-y + x0, -x + y0);
+        area->AddPixel(x + x0, -y + y0);
+        area->AddPixel(y + x0, -x + y0);
+        y++;
+        if (radiusError < 0)
+        {
+            radiusError += 2 * y + 1;
+        }
+        else
+        {
+            x--;
+            radiusError += 2 * (y - x + 1);
+        }
     }
 }

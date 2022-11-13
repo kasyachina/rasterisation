@@ -51,11 +51,14 @@ void PlotArea::drawTicks(QPainter& p)
     ticksPen.setWidth(axis_width);
     //ticks x
     int i = 0;
+    p.drawText(QRect{zx + pixel_width, zy + pixel_width, u - pixel_width, u - pixel_width}, QString::number(0));
     while(zx + (i + 2) * u < width())
     {
         i++;
         p.drawLine(zx + i * u, zy + tick_length, zx + i * u, zy - tick_length);
         p.drawLine(zx - i * u, zy + tick_length, zx - i * u, zy - tick_length);
+        p.drawText(QRect{zx + i * u + pixel_width, zy + pixel_width, u - pixel_width, u - pixel_width}, QString::number(i));
+        p.drawText(QRect{zx - (i) * u + pixel_width, zy + pixel_width, u - pixel_width, u - pixel_width}, QString::number(-i));
     }
     //ticks y
     i = 0;
@@ -64,6 +67,8 @@ void PlotArea::drawTicks(QPainter& p)
         i++;
         p.drawLine(zx - tick_length, zy + i * u, zx + tick_length, zy + i * u);
         p.drawLine(zx - tick_length, zy - i * u, zx + tick_length, zy - i * u);
+        //p.drawText(QRect{zx - u + pixel_width, zy - (i) * u +  pixel_width, u - pixel_width, u - pixel_width}, QString::number(i));
+        //p.drawText(QRect{zx - u + pixel_width, zy + (i) * u + pixel_width, u - pixel_width, u - pixel_width}, QString::number(-i));
     }
 }
 void PlotArea::drawArrows(QPainter& p)
@@ -94,8 +99,8 @@ void PlotArea::drawPixels(QPainter& p)
     p.setBrush(QBrush(pixelColor));
     for (const auto& pixel: pixels)
     {
-        int xpos = zx + (pixel.first - 1) * u + pixel_width;
-        int ypos = zy - (pixel.second) * u + pixel_width;
+        int xpos = zx + (pixel.first) * u + pixel_width;
+        int ypos = zy - (pixel.second + 1) * u + pixel_width;
         p.drawRect(xpos, ypos, u - pixel_width, u - pixel_width);
     }
 }
@@ -131,8 +136,8 @@ void PlotArea::paintEvent(QPaintEvent*)
     QPainter pt(this);
     drawBox(pt);
     drawGrid(pt);
+    drawPixels(pt);
     drawAxis(pt);
     drawTicks(pt);
     drawArrows(pt);
-    drawPixels(pt);
 }

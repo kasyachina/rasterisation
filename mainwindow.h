@@ -19,7 +19,7 @@ public:
 
 private:
     void BresenhamLine(int x1, int y1, int x2, int y2);
-    void BresenhamCircle(int r);
+    void BresenhamCircle(int x0, int y0, int r);
     void DDALine(int x1, int y1, int x2, int y2);
     void NaiveLine(int x1, int y1, int x2, int y2);
     void Castle_Pittwey(int x1, int y1, int x2, int y2);
