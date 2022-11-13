@@ -198,7 +198,7 @@
      </sizepolicy>
     </property>
     <property name="text">
-     <string>x1:</string>
+     <string>x0:</string>
     </property>
    </widget>
    <widget class="QLabel" name="y1">
@@ -217,7 +217,7 @@
      </sizepolicy>
     </property>
     <property name="text">
-     <string>y1:</string>
+     <string>y0:</string>
     </property>
    </widget>
    <widget class="QLabel" name="x2">
@@ -236,7 +236,7 @@
      </sizepolicy>
     </property>
     <property name="text">
-     <string>x2:</string>
+     <string>x1:</string>
     </property>
    </widget>
    <widget class="QLabel" name="y2">
@@ -255,7 +255,7 @@
      </sizepolicy>
     </property>
     <property name="text">
-     <string>y2:</string>
+     <string>y1:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="drawButton">
@@ -328,7 +328,7 @@
      </sizepolicy>
     </property>
     <property name="text">
-     <string>r:</string>
+     <string>радиус :</string>
     </property>
    </widget>
   </widget>

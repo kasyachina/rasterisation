@@ -32,8 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
     g -> addWidget(ui -> y2, 6, 6, 1, 1, Qt::AlignRight);
     g -> addWidget(ui -> sy, 6, 7, 1, 1);
 
-    g -> addWidget(ui -> r, 7, 4, 1, 1, Qt::AlignRight);
-    g -> addWidget(ui -> rad, 7, 5, 1, 1);
+    g -> addWidget(ui -> r, 6, 4, 1, 1, Qt::AlignRight);
+    g -> addWidget(ui -> rad, 6, 5, 1, 1);
 
     g -> addWidget(ui -> drawButton, 11, 4, 1, 2);
     g -> addWidget(ui -> scaleButton, 11, 6, 1, 2);
@@ -90,6 +90,10 @@ void MainWindow::EnableInputLine()
 void MainWindow::EnableInputCircle()
 {
     DisableInput();
+    ui -> x1 -> setVisible(true);
+    ui -> fx -> setVisible(true);
+    ui -> y1 -> setVisible(true);
+    ui -> fy -> setVisible(true);
     ui -> r -> setVisible(true);
     ui -> rad -> setVisible(true);
 }
@@ -322,7 +326,6 @@ void MainWindow::on_bcircle_clicked()
     algo = CurrentAlgo::BresenhamCircle;
     EnableInputCircle();
 }
-
 
 void MainWindow::on_nline_clicked()
 {
