@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QGridLayout>
+#include <QMessageBox>
+#include <QDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -53,7 +55,6 @@ MainWindow::MainWindow(QWidget *parent)
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
     log->AppendMessage("abracadabra");
-    WuLine(0, 0, 3, 5);
 }
 
 MainWindow::~MainWindow()
@@ -99,6 +100,7 @@ void MainWindow::EnableInputCircle()
 }
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
+    area -> Clear();
     if (x1 > x2)
     {
         std::swap(x1, x2);
@@ -127,6 +129,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 }
 void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
 {
+    area -> Clear();
     int dx = std::abs(x2 - x1);
     int sx = x1 < x2 ? 1 : -1;
     int dy = -std::abs(y2 - y1);
@@ -162,6 +165,7 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
 }
 void MainWindow::DDALine(int x1, int y1, int x2, int y2)
 {
+    area -> Clear();
     qreal dx = (x2 - x1);
     qreal dy = (y2 - y1);
     int step;
@@ -183,6 +187,7 @@ void MainWindow::DDALine(int x1, int y1, int x2, int y2)
 }
 void MainWindow::BresenhamCircle(int x0, int y0, int radius)
 {
+    area -> Clear();
     int x = radius;
     int y = 0;
     int radiusError = 1 - x;
@@ -210,6 +215,7 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
 }
 void MainWindow::WuLine(int x0, int y0, int x1, int y1)
 {
+    area -> Clear();
     auto ipart = [](qreal x)
     {
         return floor(x);
@@ -309,6 +315,7 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
 
 void MainWindow::on_bline_clicked()
 {
+    area -> Clear();
     algo = CurrentAlgo::BresenhamLine;
     EnableInputLine();
 }
@@ -316,6 +323,7 @@ void MainWindow::on_bline_clicked()
 
 void MainWindow::on_ddaline_clicked()
 {
+    area -> Clear();
     algo = CurrentAlgo::DDALine;
     EnableInputLine();
 }
@@ -323,19 +331,74 @@ void MainWindow::on_ddaline_clicked()
 
 void MainWindow::on_bcircle_clicked()
 {
+    area -> Clear();
     algo = CurrentAlgo::BresenhamCircle;
     EnableInputCircle();
 }
 
 void MainWindow::on_nline_clicked()
 {
+    area -> Clear();
     algo = CurrentAlgo::NaiveLine;
     EnableInputLine();
 }
 
 void MainWindow::on_wuline_clicked()
 {
+    area -> Clear();
     algo = CurrentAlgo::WuLine;
     EnableInputLine();
+}
+
+
+void MainWindow::on_drawButton_clicked()
+{
+    int x0, y0, x1, y1, r;
+    switch(algo)
+    {
+        case CurrentAlgo::None:
+            QMessageBox::warning(centralWidget(), "Ошибка", "Нечего рисовать");
+            break;
+        case CurrentAlgo::BresenhamLine:
+            x0 = ui -> fx -> text().toInt();
+            y0 = ui -> fy -> text().toInt();
+            x1 = ui -> sx -> text().toInt();
+            y1 = ui -> sy -> text().toInt();
+            BresenhamLine(x0, y0, x1, y1);
+            break;
+        case CurrentAlgo::NaiveLine:
+            x0 = ui -> fx -> text().toInt();
+            y0 = ui -> fy -> text().toInt();
+            x1 = ui -> sx -> text().toInt();
+            y1 = ui -> sy -> text().toInt();
+            NaiveLine(x0, y0, x1, y1);
+            break;
+        case CurrentAlgo::DDALine:
+            x0 = ui -> fx -> text().toInt();
+            y0 = ui -> fy -> text().toInt();
+            x1 = ui -> sx -> text().toInt();
+            y1 = ui -> sy -> text().toInt();
+            DDALine(x0, y0, x1, y1);
+            break;
+        case CurrentAlgo::WuLine:
+            x0 = ui -> fx -> text().toInt();
+            y0 = ui -> fy -> text().toInt();
+            x1 = ui -> sx -> text().toInt();
+            y1 = ui -> sy -> text().toInt();
+            WuLine(x0, y0, x1, y1);
+            break;
+        case CurrentAlgo::BresenhamCircle:
+            x0 = ui -> fx -> text().toInt();
+            y0 = ui -> fy -> text().toInt();
+            r = ui -> rad -> text().toInt();
+            BresenhamCircle(x0, y0, r);
+            break;
+    }
+}
+
+
+void MainWindow::on_scaleButton_clicked()
+{
+
 }
 

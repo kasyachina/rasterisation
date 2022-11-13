@@ -38,6 +38,10 @@ private slots:
 
     void on_wuline_clicked();
 
+    void on_drawButton_clicked();
+
+    void on_scaleButton_clicked();
+
 private:
     void DisableInput();
     void EnableInputLine();

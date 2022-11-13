@@ -120,7 +120,7 @@ void PlotArea::Clear()
 void PlotArea::ChangeUnit(int nu)
 {
     int length = std::min(width(), height());
-    int minUnit = length / 80;
+    int minUnit = 3;
     int maxUnit = length / 10;
     if (nu > maxUnit || nu < minUnit)
     {
