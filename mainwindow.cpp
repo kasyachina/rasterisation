@@ -3,6 +3,7 @@
 #include <QGridLayout>
 #include <QMessageBox>
 #include <QDialog>
+#include <QValidator>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -51,7 +52,12 @@ MainWindow::MainWindow(QWidget *parent)
     setMinimumSize(500, 600);
     setWindowTitle("Растеризация");
     DisableInput();
-
+    QIntValidator *validator = new QIntValidator(this);
+    ui -> fx -> setValidator(validator);
+    ui -> fy -> setValidator(validator);
+    ui -> sx -> setValidator(validator);
+    ui -> sy -> setValidator(validator);
+    ui -> rad -> setValidator(validator);
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
     log->AppendMessage("abracadabra");
@@ -97,6 +103,9 @@ void MainWindow::EnableInputCircle()
     ui -> fy -> setVisible(true);
     ui -> r -> setVisible(true);
     ui -> rad -> setVisible(true);
+    ui -> fx -> clear();
+    ui -> fy -> clear();
+    ui -> rad -> clear();
 }
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {

@@ -130,6 +130,9 @@
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
+    <property name="inputMask">
+     <string/>
+    </property>
    </widget>
    <widget class="QLineEdit" name="fy">
     <property name="geometry">
