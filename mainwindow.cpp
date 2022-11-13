@@ -35,8 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     g -> addWidget(ui -> r, 7, 4, 1, 1, Qt::AlignRight);
     g -> addWidget(ui -> rad, 7, 5, 1, 1);
 
-    g -> addWidget(ui -> drawButton, 8, 4, 1, 2);
-    g -> addWidget(ui -> scaleButton, 8, 6, 1, 2);
+    g -> addWidget(ui -> drawButton, 11, 4, 1, 2);
+    g -> addWidget(ui -> scaleButton, 11, 6, 1, 2);
     for (int i = 0; i < 8; ++i)
     {
         g -> setColumnStretch(i, 10);
@@ -47,8 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
     }
     centralWidget() -> setLayout(g);
     setMinimumSize(500, 600);
-
     setWindowTitle("Растеризация");
+    DisableInput();
 
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
@@ -61,6 +61,37 @@ MainWindow::~MainWindow()
     delete ui;
     delete area;
     delete log;
+}
+void MainWindow::DisableInput()
+{
+    ui -> x1 -> setVisible(false);
+    ui -> fx -> setVisible(false);
+    ui -> y1 -> setVisible(false);
+    ui -> fy -> setVisible(false);
+    ui -> x2 -> setVisible(false);
+    ui -> sx -> setVisible(false);
+    ui -> y2 -> setVisible(false);
+    ui -> sy -> setVisible(false);
+    ui -> r -> setVisible(false);
+    ui -> rad -> setVisible(false);
+}
+void MainWindow::EnableInputLine()
+{
+    DisableInput();
+    ui -> x1 -> setVisible(true);
+    ui -> fx -> setVisible(true);
+    ui -> y1 -> setVisible(true);
+    ui -> fy -> setVisible(true);
+    ui -> x2 -> setVisible(true);
+    ui -> sx -> setVisible(true);
+    ui -> y2 -> setVisible(true);
+    ui -> sy -> setVisible(true);
+}
+void MainWindow::EnableInputCircle()
+{
+    DisableInput();
+    ui -> r -> setVisible(true);
+    ui -> rad -> setVisible(true);
 }
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {

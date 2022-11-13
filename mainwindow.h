@@ -18,6 +18,9 @@ public:
     ~MainWindow();
 
 private:
+    void DisableInput();
+    void EnableInputLine();
+    void EnableInputCircle();
     void BresenhamLine(int x1, int y1, int x2, int y2);
     void BresenhamCircle(int x0, int y0, int r);
     void DDALine(int x1, int y1, int x2, int y2);
