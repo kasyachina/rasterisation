@@ -22,11 +22,8 @@ private:
     void BresenhamCircle(int x0, int y0, int r);
     void DDALine(int x1, int y1, int x2, int y2);
     void NaiveLine(int x1, int y1, int x2, int y2);
-    void Castle_Pittwey(int x1, int y1, int x2, int y2);
+    //void Castle_Pittwey(int x1, int y1, int x2, int y2);
     void WuLine(int x1, int y1, int x2, int y2);
-    //returns transform mask. 1 bit - invert slope, 2 bit - transpose x y
-    //int validateLine(int& x1, int& y1, int& x2, int& y2);
-    //void transform(int& x, int& y, int mask);
     Ui::MainWindow *ui;
     PlotArea *area = nullptr;
     LogWidget *log = nullptr;

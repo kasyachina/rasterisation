@@ -7,18 +7,47 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QVBoxLayout *v = new QVBoxLayout;
-    QHBoxLayout *h1 = new QHBoxLayout;
-    QHBoxLayout *h2 = new QHBoxLayout;
     area = new PlotArea();
     log = new LogWidget();
-    h1 -> addWidget(area);
-    h2 -> addWidget(log);
-    v -> addLayout(h1, 75);
-    v -> addLayout(h2, 25);
-    centralWidget() -> setLayout(v);
+    setStyleSheet("background-color: white;");
+
+    QGridLayout *g = new QGridLayout;
+
+    g -> addWidget(area, 0, 0, 12, 4);
+    g -> addWidget(log, 12, 0, 2, 8);
+
+    g -> addWidget(ui -> nline,    0, 4, 1, 4);
+    g -> addWidget(ui -> ddaline,  1, 4, 1, 4);
+    g -> addWidget(ui -> bline,    2, 4, 1, 4);
+    g -> addWidget(ui -> bcircle,  3, 4, 1, 4);
+    g -> addWidget(ui -> wuline,   4, 4, 1, 4);
+
+    g -> addWidget(ui -> x1, 5, 4, 1, 1, Qt::AlignRight);
+    g -> addWidget(ui -> fx, 5, 5, 1, 1);
+    g -> addWidget(ui -> y1, 5, 6, 1, 1, Qt::AlignRight);
+    g -> addWidget(ui -> fy, 5, 7, 1, 1);
+
+    g -> addWidget(ui -> x2, 6, 4, 1, 1, Qt::AlignRight);
+    g -> addWidget(ui -> sx, 6, 5, 1, 1);
+    g -> addWidget(ui -> y2, 6, 6, 1, 1, Qt::AlignRight);
+    g -> addWidget(ui -> sy, 6, 7, 1, 1);
+
+    g -> addWidget(ui -> r, 7, 4, 1, 1, Qt::AlignRight);
+    g -> addWidget(ui -> rad, 7, 5, 1, 1);
+
+    g -> addWidget(ui -> drawButton, 8, 4, 1, 2);
+    g -> addWidget(ui -> scaleButton, 8, 6, 1, 2);
+    for (int i = 0; i < 8; ++i)
+    {
+        g -> setColumnStretch(i, 10);
+    }
+    for (int i = 0; i < 14; ++i)
+    {
+        g -> setRowStretch(i, 10);
+    }
+    centralWidget() -> setLayout(g);
     setMinimumSize(500, 600);
-    this->setStyleSheet("background-color: white;");
+
     setWindowTitle("Растеризация");
 
     log->AppendMessage("abacaba");
