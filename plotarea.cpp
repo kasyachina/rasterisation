@@ -94,19 +94,22 @@ void PlotArea::drawArrows(QPainter& p)
 }
 void PlotArea::drawPixels(QPainter& p)
 {
-    QPen pixelPen(pixelColor, pixel_width);
-    p.setPen(pixelPen);
-    p.setBrush(QBrush(pixelColor));
-    for (const auto& pixel: pixels)
+    for (const auto& data: pixels)
     {
+        auto pixel = data.first;
+        int greyval =  255 - data.second * (max_grey_value) / 100;
+        QColor pixelColor(greyval, greyval, greyval);
+        QPen pixelPen(pixelColor, pixel_width);
+        p.setPen(pixelPen);
+        p.setBrush(QBrush(pixelColor));
         int xpos = zx + (pixel.first) * u + pixel_width;
         int ypos = zy - (pixel.second + 1) * u + pixel_width;
         p.drawRect(xpos, ypos, u - pixel_width, u - pixel_width);
     }
 }
-void PlotArea::AddPixel(int x, int y)
+void PlotArea::AddPixel(int x, int y, int percent)
 {
-    pixels.push_back({x, y});
+    pixels.push_back({{x, y}, percent});
     repaint();
 }
 void PlotArea::Clear()
@@ -135,8 +138,8 @@ void PlotArea::paintEvent(QPaintEvent*)
     zy = height() / 2;
     QPainter pt(this);
     drawBox(pt);
-    drawGrid(pt);
     drawPixels(pt);
+    drawGrid(pt);
     drawAxis(pt);
     drawTicks(pt);
     drawArrows(pt);

@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     log->AppendMessage("abacaba");
     log->AppendMessage("text");
     log->AppendMessage("abracadabra");
-    BresenhamCircle(0, 0, 5);
+    NaiveLine(0, 0, 5, 3);
 }
 
 MainWindow::~MainWindow()
@@ -33,22 +33,6 @@ MainWindow::~MainWindow()
     delete area;
     delete log;
 }
-//returns transform mask. 1 bit - invert slope, 2 bit - transpose x y
-/*int MainWindow::validateLine(int& x1, int& y1, int& x2, int& y2)
-{
-    int mask = 0;
-    if ((y1 - y2) * (x1 - x2) < 0)
-    {
-        //invert slope
-        x1 = -x1;
-        x2 = -x2;
-        mask |= 1;
-    }
-    if (std::abs(x1 - x2) > std::abs(y1 - y2))
-    {
-        //transpose x y
-    }
-}*/
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
     if (x1 > x2)
@@ -160,3 +144,4 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
         }
     }
 }
+//void MainWindow::WuLine()
