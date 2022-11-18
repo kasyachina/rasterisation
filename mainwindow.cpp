@@ -53,7 +53,7 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Растеризация");
     DisableInput();
 
-    QIntValidator *validator = new QIntValidator(this);
+    QIntValidator *validator = new QIntValidator(-100, 100, this);
     ui -> fx -> setValidator(validator);
     ui -> fy -> setValidator(validator);
     ui -> sx -> setValidator(validator);
@@ -64,9 +64,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui -> sx -> setText("0");
     ui -> sy -> setText("0");
     ui -> rad -> setText("0");
-    log->AppendMessage("abacaba");
-    log->AppendMessage("text");
-    log->AppendMessage("abracadabra");
 }
 
 MainWindow::~MainWindow()
@@ -115,6 +112,7 @@ void MainWindow::EnableInputCircle()
 }
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
+    //log -> AppendMessage("Пошаговый алгоритм начал работу.");
     area -> Clear();
     if (x1 > x2)
     {
@@ -123,24 +121,22 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
     }
     int dx = x2 - x1;
     int dy = y2 - y1;
-    if (dx == 0)
+    //log -> AppendMessage("Вычисленный dx = " + QString::number(dx));
+    //log -> AppendMessage("Вычисленный dy = " + QString::number(dy));
+    if (dx == 0 && dy == 0)
     {
-        if (y1 > y2)
-        {
-            std::swap(y1, y2);
-        }
-        for (int y = y1; y <= y2; ++y)
-        {
-            area->AddPixel(x1, y);
-        }
+         area->AddPixel(x1, y1);
     }
     else
     {
          if (std::abs(dx) > std::abs(dy))
-            for(int x = x1; x <= x2; ++x)
-            {
-                area->AddPixel(x, y1 + dy * (x - x1) / (qreal)dx);
-            }
+         {
+             log -> AppendMessage("");
+             for(int x = x1; x <= x2; ++x)
+             {
+                 area->AddPixel(x, y1 + dy * (x - x1) / (qreal)dx);
+             }
+         }
          else
          {
              if (y1 > y2)
@@ -429,7 +425,7 @@ void MainWindow::on_scaleButton_clicked()
 {
     int length = std::min(width(), height());
     bool ok;
-    int nu = QInputDialog::getInt(centralWidget(), "Изменение параметров", "Введите новое значение единичкого отрезка", 20, 3, length / 10, 1, &ok);
+    int nu = QInputDialog::getInt(centralWidget(), "Изменение параметров", "Введите новое значение единичного отрезка", 20, 3, length / 10, 1, &ok);
     if (ok)
     {
         area -> SetUnit(nu);
