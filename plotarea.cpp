@@ -112,6 +112,22 @@ void PlotArea::drawPixels(QPainter& p)
         int xpos = zx + (pixel.first) * u + pixel_width;
         int ypos = zy - (pixel.second + 1) * u + pixel_width;
         p.drawRect(xpos, ypos, u - pixel_width, u - pixel_width);
+        if (greyval < 3 * max_grey_value / 4)
+        {
+            p.setPen(Qt::white);
+        }
+        else
+        {
+            p.setPen(Qt::black);
+        }
+        if (pixel.second == 0)
+        {
+            p.drawText(QRect{xpos, ypos, u - pixel_width, u - pixel_width}, Qt::AlignLeft | Qt::AlignBottom, QString::number(pixel.first));
+        }
+        else if (pixel.first == 0)
+        {
+            p.drawText(QRect{xpos, ypos, u - pixel_width, u - pixel_width}, Qt::AlignLeft | Qt::AlignBottom, QString::number(pixel.second));
+        }
     }
 }
 void PlotArea::AddPixel(int x, int y, qreal percent)
@@ -134,11 +150,11 @@ void PlotArea::paintEvent(QPaintEvent*)
     zy = height() / 2;
     QPainter pt(this);
     drawBox(pt);
-    drawPixels(pt);
     drawGrid(pt);
     drawAxis(pt);
     drawTicks(pt);
     drawArrows(pt);
+    drawPixels(pt);
 }
 int PlotArea::getScale() const
 {
