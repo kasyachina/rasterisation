@@ -97,7 +97,7 @@ void PlotArea::drawPixels(QPainter& p)
     for (const auto& data: pixels)
     {
         auto pixel = data.first;
-        int greyval =  255 - data.second * (max_grey_value);
+        int greyval =  max_grey_value * (1 - data.second);
         QColor pixelColor(greyval, greyval, greyval);
         QPen pixelPen(pixelColor, pixel_width);
         p.setPen(pixelPen);

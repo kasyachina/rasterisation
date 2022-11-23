@@ -8,9 +8,14 @@ LogWidget::LogWidget(QWidget *parent):QPlainTextEdit(parent)
     setStyleSheet("color: black;");
 }
 
-void LogWidget::AppendMessage(const QString& message)
+void LogWidget::AppendMessage(const QString& message, int indent)
 {
-    appendPlainText(message);
+    QString indentstr("");
+    for (int i = 0; i < indent; ++i)
+    {
+        indentstr += "      ";
+    }
+    appendPlainText(indentstr + message);
 }
 void LogWidget::AppendSeparator()
 {

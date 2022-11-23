@@ -119,6 +119,10 @@ QString MainWindow::point(int x, int y)
 {
     return "(" + QString::number(x) + ", " + QString::number(y) + ")";
 }
+QString MainWindow::pointWu(int x, int y, qreal percent)
+{
+    return point(x, y) + ", со значением черного: " + QString::number((int)(100 * percent)) + "%";
+}
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
     log -> AppendMessage("Пошаговый алгоритм начал работу.");
@@ -148,7 +152,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
              {
                  qreal temp = y1 + dy * (x - x1) / (qreal)dx;
                  log -> AppendMessage("Точное значение y для x = " + QString::number(x) + " равно " + QString::number(temp) +
-                                      ", рисуем точку " + point(x, temp));
+                                      ", рисуем точку " + point(x, temp), 1);
                  area->AddPixel(x, (int)temp);
              }
          }
@@ -164,7 +168,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
              {
                  qreal temp = dx / (qreal)dy * (y - y1) + x1;
                  log -> AppendMessage("Точное значение x для y = " + QString::number(y) + " равно " + QString::number(temp) +
-                                      ", рисуем точку " + point(temp, y));
+                                      ", рисуем точку " + point(temp, y), 1);
                  area->AddPixel((int)temp, y);
              }
          }
@@ -190,10 +194,10 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
     {
         log -> AppendMessage("Рисуем точку " + point(x1, y1));
         area->AddPixel(x1, y1);
-        log -> AppendMessage("error = " + QString::number(error));
+        log -> AppendMessage("error = " + QString::number(error), 1);
         if (x1 == x2 && y1 == y2)
         {
-            log -> AppendMessage("Достигнута точка " + point(x2, y2) + ", завершение алгоритма");
+            log -> AppendMessage("Достигнута точка " + point(x2, y2) + ", завершение алгоритма", 1);
             break;
         }
         int e2 = 2 * error;
@@ -201,11 +205,11 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
         {
             if (x1 == x2)
             {
-                log -> AppendMessage("Достигнут x1, завершение алгоритма");
+                log -> AppendMessage("Достигнут x1, завершение алгоритма", 1);
                 break;
             }
             log -> AppendMessage("error - 0.5dy >= 0, значит сдвигаем текущий x на " + QString::number(sx) +
-                                 ", значение ошибки уменьшается на " + QString::number(std::abs(dy)));
+                                 ", значение ошибки уменьшается на " + QString::number(std::abs(dy)), 1);
             error = error + dy;
             x1 = x1 + sx;
         }
@@ -213,11 +217,11 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
         {
             if (y1 == y2)
             {
-                log -> AppendMessage("Достигнут y1, завершение алгоритма");
+                log -> AppendMessage("Достигнут y1, завершение алгоритма", 1);
                 break;
             }
             log -> AppendMessage("error - 0.5dx <= 0, значит сдвигаем текущий y на " + QString::number(sy) +
-                                 ", значение ошибки увеличивается на " + QString::number(dx));
+                                 ", значение ошибки увеличивается на " + QString::number(dx), 1);
             error = error + dx;
             y1 = y1 + sy;
         }
@@ -260,6 +264,7 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
 {
     area -> Clear();
     log -> AppendMessage("Алгоритм Брезенхема для окружности начал работу");
+    log -> AppendMessage("Рисуем окружность с центром в " + point(x0, y0) + " и радиусом " + QString::number(radius));
     int x = radius;
     int y = 0;
     int radiusError = 1 - x;
@@ -267,7 +272,7 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
     log -> AppendMessage("Изначальная ошибка радиуса = " + QString::number(radiusError));
     while (x >= y)
     {
-        log -> AppendMessage("Рисуем точку " + point(x + x0, y + y0) + "и соответствующие симметричные точки во всех октантах");
+        log -> AppendMessage("Рисуем точку " + point(x + x0, y + y0) + " и соответствующие симметричные точки во всех октантах");
         area->AddPixel(x + x0, y + y0);
         area->AddPixel(y + x0, x + y0);
         area->AddPixel(-x + x0, y + y0);
@@ -279,14 +284,14 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
         ++y;
         if (radiusError < 0)
         {
-            log -> AppendMessage("Ошибка радиуса < 0, значит рисуем следующие точки на том же расстоянии");
-            log -> AppendMessage("Увеличиваем ошибку радиуса на " + QString::number(2 * y + 1));
+            log -> AppendMessage("Ошибка радиуса < 0, значит рисуем следующие точки на том же расстоянии", 1);
+            log -> AppendMessage("Увеличиваем ошибку радиуса на " + QString::number(2 * y + 1), 1);
             radiusError += 2 * y + 1;
         }
         else
         {
-            log -> AppendMessage("Ошибка радиуса > 0, значит рисуем следующие точки на меньшем расстоянии");
-            log -> AppendMessage("Изменяем ошибку радиуса на " + QString::number(2 * (y - x + 1)));
+            log -> AppendMessage("Ошибка радиуса > 0, значит рисуем следующие точки на меньшем расстоянии", 1);
+            log -> AppendMessage("Изменяем ошибку радиуса на " + QString::number(2 * (y - x + 1)), 1);
             --x;
             radiusError += 2 * (y - x + 1);
         }
@@ -316,7 +321,7 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
     {
         return 1 - fpart(x);
     };
-
+    log -> AppendMessage("Алгоритм Ву начал работу");
     bool steep = std::abs(y1 - y0) > std::abs(x1 - x0);
 
     if (steep)
@@ -332,26 +337,35 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
 
     int dx = x1 - x0;
     int dy = y1 - y0;
+    log -> AppendMessage("dx = " + QString::number(dx));
+    log -> AppendMessage("dy = " + QString::number(dy));
     qreal gradient;
     if (dx == 0)
         gradient = 1.0;
     else
         gradient = dy / (qreal)dx;
+    log -> AppendMessage("Вычисляем значение градиента dy / dx: " + QString::number(gradient));
 
-    // handle first endpoint
+    //handle first endpoint for double x0 y0
     int xend = round(x0);
     qreal yend = y0 + gradient * (xend - x0);
     qreal xgap = rfpart(x0 + 0.5);
     int xpxl1 = xend; // this will be used in the main loop
     int ypxl1 = ipart(yend);
+
+    log -> AppendMessage("Обрабатываем первую крайнюю точку");
     if (steep)
     {
+        log -> AppendMessage("Рисуем точку " + pointWu(ypxl1, xpxl1, rfpart(yend) * xgap), 1);
         area->AddPixel(ypxl1,   xpxl1, rfpart(yend) * xgap);
+        log -> AppendMessage("Рисуем точку " + pointWu(ypxl1 + 1, xpxl1, rfpart(yend) * xgap), 1);
         area->AddPixel(ypxl1 + 1, xpxl1,  fpart(yend) * xgap);
     }
     else
     {
+        log -> AppendMessage("Рисуем точку " + pointWu(xpxl1, ypxl1, rfpart(yend) * xgap), 1);
         area->AddPixel(xpxl1, ypxl1  , rfpart(yend) * xgap);
+        log -> AppendMessage("Рисуем точку " + pointWu(xpxl1, ypxl1 + 1, rfpart(yend) * xgap), 1);
         area->AddPixel(xpxl1, ypxl1+1,  fpart(yend) * xgap);
     }
     qreal intery = yend + gradient; // first y-intersection for the main loop
@@ -362,18 +376,25 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
     xgap = fpart(x1 + 0.5);
     int xpxl2 = xend; //this will be used in the main loop
     int ypxl2 = ipart(yend);
+
+    log -> AppendMessage("Обрабатываем вторую крайнюю точку");
     if (steep)
     {
+        log -> AppendMessage("Рисуем точку " + pointWu(ypxl2, xpxl2, rfpart(yend) * xgap), 1);
         area->AddPixel(ypxl2  , xpxl2, rfpart(yend) * xgap);
+        log -> AppendMessage("Рисуем точку " + pointWu(ypxl2 + 1, xpxl2, rfpart(yend) * xgap), 1);
         area->AddPixel(ypxl2+1, xpxl2,  fpart(yend) * xgap);
     }
     else
     {
+        log -> AppendMessage("Рисуем точку " + point(xpxl2, ypxl2) + ", со значением черного : " + QString::number(rfpart(yend) * xgap * 100) + "%", 1);
         area->AddPixel(xpxl2, ypxl2,  rfpart(yend) * xgap);
+        log -> AppendMessage("Рисуем точку " + point(xpxl2, ypxl2 + 1) + ", со значением черного : " + QString::number(fpart(yend) * xgap * 100) + "%", 1);
         area->AddPixel(xpxl2, ypxl2+1, fpart(yend) * xgap);
     }
 
     // main loop
+    log -> AppendMessage("Рисуем все остальные точки");
     if (steep)
     {
         for (int x = xpxl1 + 1; x < xpxl2; ++x)
@@ -381,6 +402,9 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
                 area->AddPixel(ipart(intery), x, rfpart(intery));
                 area->AddPixel(ipart(intery) +1 , x,  fpart(intery));
                 intery = intery + gradient;
+                log -> AppendMessage("Рисуем точку " + pointWu(ipart(intery), x, rfpart(intery)), 1);
+                log -> AppendMessage("Рисуем точку " + pointWu(ipart(intery) + 1, x, fpart(intery)), 1);
+                log -> AppendMessage("Пересчитанное значение x: " + QString::number(intery), 2);
            }
     }
     else
@@ -390,8 +414,12 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
                 area->AddPixel(x, ipart(intery),  rfpart(intery));
                 area->AddPixel(x, ipart(intery)+1, fpart(intery));
                 intery = intery + gradient;
+                log -> AppendMessage("Рисуем точку " + pointWu(x, ipart(intery),  rfpart(intery)), 1);
+                log -> AppendMessage("Рисуем точку " + pointWu(x, ipart(intery)+1, fpart(intery)), 1);
+                log -> AppendMessage("Пересчитанное значение y: " + QString::number(intery), 2);
            }
     }
+    log -> AppendMessage("Алгоритм Ву закончил работу");
 }
 
 void MainWindow::on_bline_clicked()

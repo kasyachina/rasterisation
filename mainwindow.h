@@ -54,6 +54,7 @@ private:
     void WuLine(int x1, int y1, int x2, int y2);
     QString pointF(qreal x, qreal y);
     QString point(int x, int y);
+    QString pointWu(int x, int y, qreal percent);
     Ui::MainWindow *ui;
     PlotArea *area = nullptr;
     LogWidget *log = nullptr;
