@@ -19,6 +19,6 @@ void LogWidget::AppendMessage(const QString& message, int indent)
 }
 void LogWidget::AppendSeparator()
 {
-    AppendMessage("-------------------------------------");
+    AppendMessage("-----------------------------------------------------------------------");
     //verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }

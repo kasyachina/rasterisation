@@ -463,6 +463,17 @@ void MainWindow::on_wuline_clicked()
 void MainWindow::on_drawButton_clicked()
 {
     int x0 = 0, y0 = 0, x1 = 0, y1 = 0, r = 1;
+    auto validateField = [](QLineEdit* ed){
+        if (ed -> text().isEmpty())
+        {
+            ed -> setText("0");
+        }
+    };
+    validateField(ui -> fx);
+    validateField(ui -> fy);
+    validateField(ui -> sx);
+    validateField(ui -> sy);
+    validateField(ui -> rad);
     switch(algo)
     {
         case CurrentAlgo::None:
