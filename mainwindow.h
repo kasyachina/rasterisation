@@ -52,6 +52,8 @@ private:
     void NaiveLine(int x1, int y1, int x2, int y2);
     //void Castle_Pittwey(int x1, int y1, int x2, int y2);
     void WuLine(int x1, int y1, int x2, int y2);
+    QString pointF(qreal x, qreal y);
+    QString point(int x, int y);
     Ui::MainWindow *ui;
     PlotArea *area = nullptr;
     LogWidget *log = nullptr;

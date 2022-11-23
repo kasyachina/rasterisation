@@ -111,9 +111,19 @@ void MainWindow::EnableInputCircle()
     ui -> fy -> setText("0");
     ui -> rad -> setText("0");
 }
+QString MainWindow::pointF(qreal x, qreal y)
+{
+    return "(" + QString::number(x) + ", " + QString::number(y) + ")";
+}
+QString MainWindow::point(int x, int y)
+{
+    return "(" + QString::number(x) + ", " + QString::number(y) + ")";
+}
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
     log -> AppendMessage("Пошаговый алгоритм начал работу.");
+    log -> AppendMessage("Рисуем линию от " + point(x1, y1) + " до " +
+                point(x2, y2));
     area -> Clear();
     if (x1 > x2)
     {
@@ -126,7 +136,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
     log -> AppendMessage("Вычисленный dy = " + QString::number(dy));
     if (dx == 0 && dy == 0)
     {
-         log -> AppendMessage("dx = 0, dy = 0 => рисуем одну точку (" + QString::number(x1) + "," + QString::number(y1) + ")");
+         log -> AppendMessage("dx = 0, dy = 0 => рисуем одну точку " + point(x2, y2));
          area->AddPixel(x1, y1);
     }
     else
@@ -138,7 +148,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
              {
                  qreal temp = y1 + dy * (x - x1) / (qreal)dx;
                  log -> AppendMessage("Точное значение y для x = " + QString::number(x) + " равно " + QString::number(temp) +
-                                      ", рисуем точку (" + QString::number(x) + ", " + QString::number((int)temp) + ")");
+                                      ", рисуем точку " + point(x, temp));
                  area->AddPixel(x, (int)temp);
              }
          }
@@ -154,7 +164,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
              {
                  qreal temp = dx / (qreal)dy * (y - y1) + x1;
                  log -> AppendMessage("Точное значение x для y = " + QString::number(y) + " равно " + QString::number(temp) +
-                                      ", рисуем точку (" + QString::number((int)temp) + ", " + QString::number(y) + ")");
+                                      ", рисуем точку " + point(temp, y));
                  area->AddPixel((int)temp, y);
              }
          }
@@ -173,17 +183,17 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
     log -> AppendMessage("-|dy| = " + QString::number(dy));
     int sy = y1 < y2 ? 1 : -1;
     int error = dx + dy;
-    log -> AppendMessage("Рисуем линию от (" + QString::number(x1) + ", " + QString::number(y1) + ") до " +
-                "(" + QString::number(x2) + ", " + QString::number(y2) + ")");
+    log -> AppendMessage("Рисуем линию от " + point(x1, y1) + " до " +
+                point(x2, y2));
     log -> AppendMessage("Пусть линия задается уравнением f(X, Y) = 0. Будем поддерживать f(Xi, Yi) - f(Xi - 1, Yi - 1) в качестве значения ошибки");
     while (true)
     {
-        log -> AppendMessage("Рисуем точку (" + QString::number(x1) + ", " + QString::number(y1) + ")");
+        log -> AppendMessage("Рисуем точку " + point(x1, y1));
         area->AddPixel(x1, y1);
         log -> AppendMessage("error = " + QString::number(error));
         if (x1 == x2 && y1 == y2)
         {
-            log -> AppendMessage("Достигнута точка (" + QString::number(x2) + ", " + QString::number(y2) + "), завершение алгоритма");
+            log -> AppendMessage("Достигнута точка " + point(x2, y2) + ", завершение алгоритма");
             break;
         }
         int e2 = 2 * error;
@@ -216,6 +226,9 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
 }
 void MainWindow::DDALine(int x1, int y1, int x2, int y2)
 {
+    log -> AppendMessage("Алгоритм ЦДА начал работу");
+    log -> AppendMessage("Рисуем линию от " + point(x1, y1) + " до " +
+                point(x2, y2));
     area -> Clear();
     qreal dx = (x2 - x1);
     qreal dy = (y2 - y1);
@@ -226,15 +239,22 @@ void MainWindow::DDALine(int x1, int y1, int x2, int y2)
       step = abs(dy);
     dx = dx / step;
     dy = dy / step;
+    log -> AppendMessage("Число шагов = " + QString::number(step));
+    log -> AppendMessage("dx = " + QString::number(dx));
+    log -> AppendMessage("dy = " + QString::number(dy));
     qreal x = x1;
     qreal y = y1;
     int i = 0;
     while (i <= step) {
-      area->AddPixel(x, y);
-      x = x + dx;
-      y = y + dy;
-      i = i + 1;
+        log -> AppendMessage("Вычисленная точка: " + pointF(x, y) +
+                             ", рисуем точку " + point(x, y));
+        area->AddPixel(x, y);
+        x = x + dx;
+        y = y + dy;
+        ++i;
     }
+    log -> AppendMessage("Алгоритм ЦДА закончил работу");
+    log -> AppendSeparator();
 }
 void MainWindow::BresenhamCircle(int x0, int y0, int radius)
 {
