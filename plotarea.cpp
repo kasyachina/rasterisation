@@ -133,3 +133,7 @@ void PlotArea::paintEvent(QPaintEvent*)
     drawTicks(pt);
     drawArrows(pt);
 }
+int PlotArea::getScale() const
+{
+    return u;
+}

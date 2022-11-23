@@ -13,6 +13,7 @@ public:
     void AddPixel(int x, int y, qreal percent = 1);
     void Clear();
     void SetUnit(int nu);
+    int getScale() const;
 private:
     int u; // unit size
     int tick_length = 4;

@@ -510,7 +510,7 @@ void MainWindow::on_scaleButton_clicked()
 {
     int length = std::min(width(), height());
     bool ok;
-    int nu = QInputDialog::getInt(centralWidget(), "Изменение параметров", "Введите новое значение единичного отрезка", 20, 3, length / 10, 1, &ok);
+    int nu = QInputDialog::getInt(centralWidget(), "Изменение параметров", "Введите новое значение единичного отрезка", area -> getScale(), 3, length / 10, 1, &ok);
     if (ok)
     {
         area -> SetUnit(nu);
