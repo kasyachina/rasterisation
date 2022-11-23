@@ -259,11 +259,15 @@ void MainWindow::DDALine(int x1, int y1, int x2, int y2)
 void MainWindow::BresenhamCircle(int x0, int y0, int radius)
 {
     area -> Clear();
+    log -> AppendMessage("Алгоритм Брезенхема для окружности начал работу");
     int x = radius;
     int y = 0;
     int radiusError = 1 - x;
+    log -> AppendMessage("Будем поддерживать ошибку радиуса, и в соответствии с ней рисовать точки ближе к центру или дальше от него");
+    log -> AppendMessage("Изначальная ошибка радиуса = " + QString::number(radiusError));
     while (x >= y)
     {
+        log -> AppendMessage("Рисуем точку " + point(x + x0, y + y0) + "и соответствующие симметричные точки во всех октантах");
         area->AddPixel(x + x0, y + y0);
         area->AddPixel(y + x0, x + y0);
         area->AddPixel(-x + x0, y + y0);
@@ -275,14 +279,20 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
         ++y;
         if (radiusError < 0)
         {
+            log -> AppendMessage("Ошибка радиуса < 0, значит рисуем следующие точки на том же расстоянии");
+            log -> AppendMessage("Увеличиваем ошибку радиуса на " + QString::number(2 * y + 1));
             radiusError += 2 * y + 1;
         }
         else
         {
+            log -> AppendMessage("Ошибка радиуса > 0, значит рисуем следующие точки на меньшем расстоянии");
+            log -> AppendMessage("Изменяем ошибку радиуса на " + QString::number(2 * (y - x + 1)));
             --x;
             radiusError += 2 * (y - x + 1);
         }
     }
+    log -> AppendMessage("Алгоритм Брезенхема для окружности закончил работу");
+    log -> AppendSeparator();
 }
 void MainWindow::WuLine(int x0, int y0, int x1, int y1)
 {
