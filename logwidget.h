@@ -9,6 +9,7 @@ class LogWidget : public QPlainTextEdit
 public:
     explicit LogWidget(QWidget *parent = nullptr);
     void AppendMessage(const QString& message);
+    void AppendSeparator();
 };
 
 #endif // LOGWIDGET_H

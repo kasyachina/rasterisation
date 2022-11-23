@@ -126,7 +126,7 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
     log -> AppendMessage("Вычисленный dy = " + QString::number(dy));
     if (dx == 0 && dy == 0)
     {
-         log -> AppendMessage("dx = 0, dy = 0 => рисуем одну точку");
+         log -> AppendMessage("dx = 0, dy = 0 => рисуем одну точку (" + QString::number(x1) + "," + QString::number(y1) + ")");
          area->AddPixel(x1, y1);
     }
     else
@@ -136,7 +136,10 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
              log -> AppendMessage("|dx| > |dy| => рисуем отрезок, просматривая значения x от " + QString::number(x1) +  " до " + QString::number(x2));
              for(int x = x1; x <= x2; ++x)
              {
-                 area->AddPixel(x, y1 + dy * (x - x1) / (qreal)dx);
+                 qreal temp = y1 + dy * (x - x1) / (qreal)dx;
+                 log -> AppendMessage("Точное значение y для x = " + QString::number(x) + " равно " + QString::number(temp) +
+                                      ", рисуем точку (" + QString::number(x) + ", " + QString::number((int)temp) + ")");
+                 area->AddPixel(x, (int)temp);
              }
          }
          else
@@ -149,12 +152,15 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
              log -> AppendMessage("|dy| >= |dx| => рисуем отрезок, просматривая значения y от " + QString::number(y1) +  " до " + QString::number(y2));
              for (int y = y1; y <= y2; ++y)
              {
-                 area->AddPixel(dx / (qreal)dy * (y - y1) + x1, y);
+                 qreal temp = dx / (qreal)dy * (y - y1) + x1;
+                 log -> AppendMessage("Точное значение x для y = " + QString::number(y) + " равно " + QString::number(temp) +
+                                      ", рисуем точку (" + QString::number((int)temp) + ", " + QString::number(y) + ")");
+                 area->AddPixel((int)temp, y);
              }
          }
     }
     log -> AppendMessage("Пошаговый алгоритм закончил работу");
-    log -> AppendMessage("----------------------------------");
+    log -> AppendSeparator();
 }
 void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
 {

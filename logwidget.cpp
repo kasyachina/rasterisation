@@ -13,3 +13,7 @@ void LogWidget::AppendMessage(const QString& message)
     appendPlainText(message);
     verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
+void LogWidget::AppendSeparator()
+{
+    AppendMessage("-------------------------------------");
+}
