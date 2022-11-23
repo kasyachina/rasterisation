@@ -49,7 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
         g -> setRowStretch(i, 10);
     }
     centralWidget() -> setLayout(g);
-    setMinimumSize(500, 600);
+    setMinimumSize(700, 600);
+    resize(800, 700);
     setWindowTitle("Растеризация");
     DisableInput();
 
@@ -112,7 +113,7 @@ void MainWindow::EnableInputCircle()
 }
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
-    //log -> AppendMessage("Пошаговый алгоритм начал работу.");
+    log -> AppendMessage("Пошаговый алгоритм начал работу.");
     area -> Clear();
     if (x1 > x2)
     {
@@ -121,17 +122,18 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
     }
     int dx = x2 - x1;
     int dy = y2 - y1;
-    //log -> AppendMessage("Вычисленный dx = " + QString::number(dx));
-    //log -> AppendMessage("Вычисленный dy = " + QString::number(dy));
+    log -> AppendMessage("Вычисленный dx = " + QString::number(dx));
+    log -> AppendMessage("Вычисленный dy = " + QString::number(dy));
     if (dx == 0 && dy == 0)
     {
+         log -> AppendMessage("dx = 0, dy = 0 => рисуем одну точку");
          area->AddPixel(x1, y1);
     }
     else
     {
          if (std::abs(dx) > std::abs(dy))
          {
-             log -> AppendMessage("");
+             log -> AppendMessage("|dx| > |dy| => рисуем отрезок, просматривая значения x от " + QString::number(x1) +  " до " + QString::number(x2));
              for(int x = x1; x <= x2; ++x)
              {
                  area->AddPixel(x, y1 + dy * (x - x1) / (qreal)dx);
@@ -144,12 +146,15 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
                  std::swap(x1, x2);
                  std::swap(y1, y2);
              }
+             log -> AppendMessage("|dy| >= |dx| => рисуем отрезок, просматривая значения y от " + QString::number(y1) +  " до " + QString::number(y2));
              for (int y = y1; y <= y2; ++y)
              {
                  area->AddPixel(dx / (qreal)dy * (y - y1) + x1, y);
              }
          }
     }
+    log -> AppendMessage("Пошаговый алгоритм закончил работу");
+    log -> AppendMessage("----------------------------------");
 }
 void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
 {
@@ -225,14 +230,14 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
         area->AddPixel(-y + x0, -x + y0);
         area->AddPixel(x + x0, -y + y0);
         area->AddPixel(y + x0, -x + y0);
-        y++;
+        ++y;
         if (radiusError < 0)
         {
             radiusError += 2 * y + 1;
         }
         else
         {
-            x--;
+            --x;
             radiusError += 2 * (y - x + 1);
         }
     }
