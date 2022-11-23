@@ -164,17 +164,26 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 }
 void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
 {
+    log -> AppendMessage("Алгоритм Брезенхема начал работу");
     area -> Clear();
     int dx = std::abs(x2 - x1);
+    log -> AppendMessage("|dx| = " + QString::number(dx));
     int sx = x1 < x2 ? 1 : -1;
     int dy = -std::abs(y2 - y1);
+    log -> AppendMessage("-|dy| = " + QString::number(dy));
     int sy = y1 < y2 ? 1 : -1;
     int error = dx + dy;
+    log -> AppendMessage("Рисуем линию от (" + QString::number(x1) + ", " + QString::number(y1) + ") до " +
+                "(" + QString::number(x2) + ", " + QString::number(y2) + ")");
+    log -> AppendMessage("Пусть линия задается уравнением f(X, Y) = 0. Будем поддерживать f(Xi, Yi) - f(Xi - 1, Yi - 1) в качестве значения ошибки");
     while (true)
     {
+        log -> AppendMessage("Рисуем точку (" + QString::number(x1) + ", " + QString::number(y1) + ")");
         area->AddPixel(x1, y1);
+        log -> AppendMessage("error = " + QString::number(error));
         if (x1 == x2 && y1 == y2)
         {
+            log -> AppendMessage("Достигнута точка (" + QString::number(x2) + ", " + QString::number(y2) + "), завершение алгоритма");
             break;
         }
         int e2 = 2 * error;
@@ -182,8 +191,11 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
         {
             if (x1 == x2)
             {
+                log -> AppendMessage("Достигнут x1, завершение алгоритма");
                 break;
             }
+            log -> AppendMessage("error - 0.5dy >= 0, значит сдвигаем текущий x на " + QString::number(sx) +
+                                 ", значение ошибки уменьшается на " + QString::number(std::abs(dy)));
             error = error + dy;
             x1 = x1 + sx;
         }
@@ -191,12 +203,16 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
         {
             if (y1 == y2)
             {
+                log -> AppendMessage("Достигнут y1, завершение алгоритма");
                 break;
             }
+            log -> AppendMessage("error - 0.5dx <= 0, значит сдвигаем текущий y на " + QString::number(sy) +
+                                 ", значение ошибки увеличивается на " + QString::number(dx));
             error = error + dx;
             y1 = y1 + sy;
         }
     }
+    log -> AppendSeparator();
 }
 void MainWindow::DDALine(int x1, int y1, int x2, int y2)
 {

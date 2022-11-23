@@ -11,9 +11,9 @@ LogWidget::LogWidget(QWidget *parent):QPlainTextEdit(parent)
 void LogWidget::AppendMessage(const QString& message)
 {
     appendPlainText(message);
-    verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
 void LogWidget::AppendSeparator()
 {
     AppendMessage("-------------------------------------");
+    //verticalScrollBar()->setValue(verticalScrollBar()->maximum());
 }
