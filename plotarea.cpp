@@ -49,26 +49,33 @@ void PlotArea::drawTicks(QPainter& p)
 {
     QPen ticksPen(axisColor);
     ticksPen.setWidth(axis_width);
+    p.setPen(ticksPen);
+    QFont font = p.font();
+    font.setPixelSize(12);
+    p.setFont(font);
     //ticks x
     int i = 0;
-    p.drawText(QRect{zx + pixel_width, zy + pixel_width, u - pixel_width, u - pixel_width}, QString::number(0));
+    p.drawText(QRect{zx + pixel_width, zy - u + pixel_width, u - pixel_width, u - pixel_width}, Qt::AlignLeft | Qt::AlignBottom, QString::number(0));
     while(zx + (i + 2) * u < width())
     {
         i++;
         p.drawLine(zx + i * u, zy + tick_length, zx + i * u, zy - tick_length);
         p.drawLine(zx - i * u, zy + tick_length, zx - i * u, zy - tick_length);
-        p.drawText(QRect{zx + i * u + pixel_width, zy + pixel_width, u - pixel_width, u - pixel_width}, QString::number(i));
-        p.drawText(QRect{zx - (i) * u + pixel_width, zy + pixel_width, u - pixel_width, u - pixel_width}, QString::number(-i));
+        if (zx + (i + 2) * u < width())
+            p.drawText(QRect{zx + i * u + pixel_width, zy - u + pixel_width, u - pixel_width, u - pixel_width}, Qt::AlignLeft | Qt::AlignBottom, QString::number(i));
+        p.drawText(QRect{zx - (i) * u + pixel_width, zy - u + pixel_width, u - pixel_width, u - pixel_width}, Qt::AlignLeft | Qt::AlignBottom, QString::number(-i));
     }
     //ticks y
     i = 0;
+    //p.drawText(QRect{zx - u +  pixel_width, zy - u + pixel_width, u - pixel_width, u - pixel_width}, QString::number(0));
     while(zy + (i + 2) * u < height())
     {
         i++;
         p.drawLine(zx - tick_length, zy + i * u, zx + tick_length, zy + i * u);
         p.drawLine(zx - tick_length, zy - i * u, zx + tick_length, zy - i * u);
-        //p.drawText(QRect{zx - u + pixel_width, zy - (i) * u +  pixel_width, u - pixel_width, u - pixel_width}, QString::number(i));
-        //p.drawText(QRect{zx - u + pixel_width, zy + (i) * u + pixel_width, u - pixel_width, u - pixel_width}, QString::number(-i));
+        if (zy - (i + 2) * u > 0)
+            p.drawText(QRect{zx + pixel_width, zy - (i + 1) * u +  pixel_width, u - pixel_width, u - pixel_width}, Qt::AlignLeft | Qt::AlignBottom, QString::number(i));
+        p.drawText(QRect{zx + pixel_width, zy + (i - 1) * u + pixel_width, u - pixel_width, u - pixel_width}, Qt::AlignLeft | Qt::AlignBottom, QString::number(-i));
     }
 }
 void PlotArea::drawArrows(QPainter& p)
