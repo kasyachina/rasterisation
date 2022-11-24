@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QValidator>
+#include <chrono>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -126,6 +127,7 @@ QString MainWindow::pointWu(int x, int y, qreal percent)
 void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
 {
     log -> AppendMessage("Пошаговый алгоритм начал работу.");
+    auto begin = std::chrono::steady_clock::now();
     log -> AppendMessage("Рисуем линию от " + point(x1, y1) + " до " +
                 point(x2, y2));
     area -> Clear();
@@ -173,12 +175,15 @@ void MainWindow::NaiveLine(int x1, int y1, int x2, int y2)
              }
          }
     }
-    log -> AppendMessage("Пошаговый алгоритм закончил работу");
+    auto end = std::chrono::steady_clock::now();
+    int duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    log -> AppendMessage("Пошаговый алгоритм закончил работу(" + QString::number(duration) + " ms)");
     log -> AppendSeparator();
 }
 void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
 {
     log -> AppendMessage("Алгоритм Брезенхема начал работу");
+    auto begin = std::chrono::steady_clock::now();
     area -> Clear();
     int dx = std::abs(x2 - x1);
     log -> AppendMessage("|dx| = " + QString::number(dx));
@@ -197,7 +202,7 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
         log -> AppendMessage("error = " + QString::number(error), 1);
         if (x1 == x2 && y1 == y2)
         {
-            log -> AppendMessage("Достигнута точка " + point(x2, y2) + ", завершение алгоритма", 1);
+            log -> AppendMessage("Достигнута точка " + point(x2, y2) + ", выход из цикла", 1);
             break;
         }
         int e2 = 2 * error;
@@ -205,7 +210,7 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
         {
             if (x1 == x2)
             {
-                log -> AppendMessage("Достигнут x1, завершение алгоритма", 1);
+                log -> AppendMessage("Достигнут x1, выход из цикла", 1);
                 break;
             }
             log -> AppendMessage("error - 0.5dy >= 0, значит сдвигаем текущий x на " + QString::number(sx) +
@@ -217,7 +222,7 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
         {
             if (y1 == y2)
             {
-                log -> AppendMessage("Достигнут y1, завершение алгоритма", 1);
+                log -> AppendMessage("Достигнут y1, выход из цикла", 1);
                 break;
             }
             log -> AppendMessage("error - 0.5dx <= 0, значит сдвигаем текущий y на " + QString::number(sy) +
@@ -226,11 +231,15 @@ void MainWindow::BresenhamLine(int x1, int y1, int x2, int y2)
             y1 = y1 + sy;
         }
     }
+    auto end = std::chrono::steady_clock::now();
+    int duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    log -> AppendMessage("Алгоритм Брезенхема закончил работу(" + QString::number(duration) + " ms)");
     log -> AppendSeparator();
 }
 void MainWindow::DDALine(int x1, int y1, int x2, int y2)
 {
     log -> AppendMessage("Алгоритм ЦДА начал работу");
+    auto begin = std::chrono::steady_clock::now();
     log -> AppendMessage("Рисуем линию от " + point(x1, y1) + " до " +
                 point(x2, y2));
     area -> Clear();
@@ -257,13 +266,16 @@ void MainWindow::DDALine(int x1, int y1, int x2, int y2)
         y = y + dy;
         ++i;
     }
-    log -> AppendMessage("Алгоритм ЦДА закончил работу");
+    auto end = std::chrono::steady_clock::now();
+    int duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    log -> AppendMessage("Алгоритм ЦДА закончил работу(" + QString::number(duration) + " ms)");
     log -> AppendSeparator();
 }
 void MainWindow::BresenhamCircle(int x0, int y0, int radius)
 {
-    area -> Clear();
     log -> AppendMessage("Алгоритм Брезенхема для окружности начал работу");
+    auto begin = std::chrono::steady_clock::now();
+    area -> Clear();
     log -> AppendMessage("Рисуем окружность с центром в " + point(x0, y0) + " и радиусом " + QString::number(radius));
     int x = radius;
     int y = 0;
@@ -296,7 +308,9 @@ void MainWindow::BresenhamCircle(int x0, int y0, int radius)
             radiusError += 2 * (y - x + 1);
         }
     }
-    log -> AppendMessage("Алгоритм Брезенхема для окружности закончил работу");
+    auto end = std::chrono::steady_clock::now();
+    int duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    log -> AppendMessage("Алгоритм Брезенхема для окружности закончил работу(" + QString::number(duration) + " ms)");
     log -> AppendSeparator();
 }
 void MainWindow::WuLine(int x0, int y0, int x1, int y1)
@@ -322,6 +336,7 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
         return 1 - fpart(x);
     };
     log -> AppendMessage("Алгоритм Ву начал работу");
+    auto begin = std::chrono::steady_clock::now();
     bool steep = std::abs(y1 - y0) > std::abs(x1 - x0);
 
     if (steep)
@@ -419,7 +434,9 @@ void MainWindow::WuLine(int x0, int y0, int x1, int y1)
                 log -> AppendMessage("Пересчитанное значение y: " + QString::number(intery), 2);
            }
     }
-    log -> AppendMessage("Алгоритм Ву закончил работу");
+    auto end = std::chrono::steady_clock::now();
+    int duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count();
+    log -> AppendMessage("Алгоритм Ву закончил работу(" + QString::number(duration) + " ms)");
 }
 
 void MainWindow::on_bline_clicked()
