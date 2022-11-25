@@ -5,6 +5,7 @@
 #include <QInputDialog>
 #include <QValidator>
 #include <chrono>
+#include <cmath>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
