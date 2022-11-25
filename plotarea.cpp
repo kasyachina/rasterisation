@@ -91,6 +91,7 @@ void PlotArea::drawArrows(QPainter& p)
     px.lineTo(width() - 1, zy);
     px.lineTo(width() - u - 1, zy + 2 * tick_length);
     p.drawPath(px);
+    p.drawText(QRect{width() - u / 2 - 1, zy + u / 2, u, u}, "X");
     //arrow y
     QPainterPath py;
     py.moveTo(zx + 2 * tick_length, u + 1);
@@ -98,6 +99,7 @@ void PlotArea::drawArrows(QPainter& p)
     py.lineTo(zx, 1);
     py.lineTo(zx + 2 * tick_length, u + 1);
     p.drawPath(py);
+    p.drawText(QRect{zx + u / 2, u / 2, u, u}, "Y");
 }
 void PlotArea::drawPixels(QPainter& p)
 {
